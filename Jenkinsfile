@@ -14,7 +14,7 @@ stages {
 stage('Git Checkout') {
  
 steps {
-git branch: 'main', credentialsId: 'git-cred', url: 'https://github.com/jaiswaladi246/Boardgame.git'
+git branch: 'main', credentialsId: 'git-cred', url: 'https://github.com/muhannadpv786/Boardgame.git'
 }
 }
 
@@ -63,20 +63,20 @@ sh "mvn deploy"
 
 stage('Build & Tag Docker Image') { steps {
 script {
-withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') { sh "docker build -t adijaiswal/boardshack:latest ."
+withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') { sh "docker build -t muhannadpv/boardshack:latest ."
 }
 }
 }
 }
 
 stage('Docker Image Scan') { steps {
-sh "trivy image --format table -o trivy-image-report.html adijaiswal/boardshack:latest "
+sh "trivy image --format table -o trivy-image-report.html muhannadpv/boardshack:latest "
 }
 }
 
 stage('Push Docker Image') { steps {
 script {
-withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') { sh "docker push adijaiswal/boardshack:latest"
+withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker') { sh "docker push muhannadpv/boardshack:latest"
 }
 }
 }
@@ -139,7 +139,7 @@ output</a>.</p>
 emailext (
 subject: "${jobName} - Build ${buildNumber} -
 ${pipelineStatus.toUpperCase()}", body: body,
-to: 'jaiswaladi246@gmail.com', from: 'jenkins@example.com', replyTo: 'jenkins@example.com', mimeType: 'text/html',
+to: p.vmuhannad786@gmail.com', from: 'jenkins@example.com', replyTo: 'jenkins@example.com', mimeType: 'text/html',
 attachmentsPattern: 'trivy-image-report.html'
 )
 }
