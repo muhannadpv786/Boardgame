@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-               git branch: 'main', credentialsId: git credentialsId: 'git-creds', url: 'https://github.com/muhannadpv786/Boardgame.git'
+               git branch: 'main',url: 'https://github.com/muhannadpv786/Boardgame.git'
         }
         
         stage('Compile') {
