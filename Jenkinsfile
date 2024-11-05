@@ -45,13 +45,16 @@ pipeline {
             }
         }
         
-        stage('Quality Gate') {
-            steps {
-             script {
-                 waitForQuailtyGate abortPipeline: false, credentialsId: 'sonar-token'
+       stage('Quality Gate') {
+    steps {
+        script {
+            def qg = waitForQualityGate()
+            if (qg.status != 'OK') {
+                error "Quality gate failed: ${qg.status}"
             }
         }
     }
+}
         
         stage('Build') {
             steps {
@@ -61,7 +64,7 @@ pipeline {
         
         stage('Publish To Nexus') {
             steps {
-                withMaven(globalMavenSettingsConfig: 'globalsettings', jdk: 'java17', maven: 'maven3', mavenSettingsConfig: '', traceability: true) {
+              withMaven(globalMavenSettingsConfig: 'global-settings', jdk: 'jdk17', maven: 'maven3', mavenSettingsConfig: '', traceability: true) {
                     sh "mvn deploy"
             }
                 
